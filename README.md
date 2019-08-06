@@ -24,14 +24,14 @@ git clone https://github.com/asonawalla/unbake.git
 cd unbake && go install
 ```
 
-Then invoke with a bake file and pipe the output to `sh`
+Then invoke with a bake file and pipe the output to `sh`:
 ```
 unbake -f bake.hcl | sh
 ```
 
 ### Using with Docker
 Alternately, you can run unbake using the docker container uploaded to docker hub (docker is the only
-requirement, making this a promising option for CI environments)
+requirement, making this a promising option for CI environments):
 ```
 docker run --rm -v$(pwd):/bake asonawalla/unbake /bin/unbake -f /bake/bake.hcl | sh
 ```
