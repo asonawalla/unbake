@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -43,9 +44,15 @@ unbake solves for this discrepancy by taking a bake file as an input and generat
 plain docker commands to build those targets. You'd want to run the unbake container
 in your CI against a bake file and pipe the output of it to shell to continue with a
 multi-invocation docker build process.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		var commands, err = unbake(cmd.Flag("file").Value.String())
+		if err != nil {
+			log.Panic(err)
+		}
+		for _, command := range commands {
+			fmt.Println(command)
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -59,16 +66,10 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.unbake.yaml)")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.Flags().StringP("file", "f", "", "bake file to process")
+	_ = rootCmd.MarkFlagRequired("file")
 }
 
 // initConfig reads in config file and ENV variables if set.
