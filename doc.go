@@ -29,6 +29,4 @@
 //requirement, making this a promising option for CI environments):
 //docker run --rm -v$(pwd):/bake asonawalla/unbake /bin/unbake -f /bake/bake.hcl | sh
 //
-
-// package main contains all of unbake
 package main
