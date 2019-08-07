@@ -14,25 +14,21 @@
 //in your CI against a bake file and pipe the output of it to shell to continue with a
 //multi-invocation docker build process.
 //
-//## usage
+//usage
 //
-//### Installing using the go tool
+//Installing using the go tool
 //Clone this repository and run `go install` in the module:
-//```
 //git clone https://github.com/asonawalla/unbake.git
 //cd unbake && go install
-//```
 //
 //Then invoke with a bake file and pipe the output to `sh`:
-//```
 //unbake -f bake.hcl | sh
-//```
 //
-//### Using with Docker
+//Using with Docker
 //Alternately, you can run unbake using the docker container uploaded to docker hub (docker is the only
 //requirement, making this a promising option for CI environments):
-//```
 //docker run --rm -v$(pwd):/bake asonawalla/unbake /bin/unbake -f /bake/bake.hcl | sh
-//```
 //
+
+// package main contains all of unbake
 package main
