@@ -43,6 +43,42 @@ func TestBasicLoad(t *testing.T) {
 	}
 
 	var expect = map[string]struct{}{
+		"docker build -t foo -f docker/go_container.dockerfile --build-arg cmd=foo .": {},
+		"docker build -t bar -f docker/go_container.dockerfile --build-arg cmd=bar .": {},
+	}
+
+	var actual = make(map[string]struct{})
+	for _, val := range result {
+		actual[val] = struct{}{}
+	}
+
+	if !reflect.DeepEqual(expect, actual) {
+		t.Fatalf("command mismatch, expected:\n %v\n got:\n %v", expect, actual)
+	}
+}
+
+func TestLoadWithBuildKit(t *testing.T) {
+	buildKit = true
+	var testFile, err = createTestConfigFile()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := os.Remove(testFile); err != nil {
+			t.Fatalf("removing test file: %s", err)
+		}
+	}()
+
+	result, err := unbake(testFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != 2 {
+		t.Fatal("wrong number of command results")
+	}
+
+	var expect = map[string]struct{}{
 		"DOCKER_BUILDKIT=1 docker build -t foo -f docker/go_container.dockerfile --build-arg cmd=foo .": {},
 		"DOCKER_BUILDKIT=1 docker build -t bar -f docker/go_container.dockerfile --build-arg cmd=bar .": {},
 	}

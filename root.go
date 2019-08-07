@@ -66,10 +66,14 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.unbake.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "",
+		"config file (default is $HOME/.unbake.yaml)")
 
 	rootCmd.Flags().StringP("file", "f", "", "bake file to process")
 	_ = rootCmd.MarkFlagRequired("file")
+
+	rootCmd.Flags().BoolVarP(&buildKit, "buildkit", "b", false,
+		"prepend DOCKER_BUILDKIT=1 to commands")
 }
 
 // initConfig reads in config file and ENV variables if set.
