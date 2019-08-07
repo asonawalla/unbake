@@ -19,7 +19,7 @@ plain docker commands to build those targets. You'd want to run the unbake conta
 in your CI against a bake file and pipe the output of it to shell to continue with a
 multi-invocation docker build process.
 
-## usage
+## Usage
 
 ### Installing using the go tool
 Clone this repository and run `go install` in the module:
