@@ -1,7 +1,7 @@
 # unbake
-Reverse docker buildx bake files into sequential docker commands
-
 [![CircleCI](https://circleci.com/gh/asonawalla/unbake.svg?style=svg)](https://circleci.com/gh/asonawalla/unbake)
+
+Reverse docker buildx bake files into sequential docker commands
 
 docker/buildx is a plugin to the most recent docker distribution
 that allows users to define high level build information (bake files)
