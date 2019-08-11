@@ -60,6 +60,10 @@ func TestBasicLoad(t *testing.T) {
 
 func TestLoadWithBuildKit(t *testing.T) {
 	buildKit = true
+	defer func() {
+		buildKit = false
+	}()
+
 	var testFile, err = createTestConfigFile()
 	if err != nil {
 		t.Fatal(err)
@@ -97,6 +101,11 @@ func TestLoadWithBuildKit(t *testing.T) {
 func TestLoadWithCustomConfig(t *testing.T) {
 	buildKit = true
 	dockerCfg = "/path/to/config"
+	defer func() {
+		buildKit = false
+		dockerCfg = ""
+	}()
+
 	var testFile, err = createTestConfigFile()
 	if err != nil {
 		t.Fatal(err)
@@ -119,6 +128,46 @@ func TestLoadWithCustomConfig(t *testing.T) {
 	var expect = map[string]struct{}{
 		"DOCKER_BUILDKIT=1 docker --config=/path/to/config build -t foo -f docker/go_container.dockerfile --build-arg cmd=foo .": {},
 		"DOCKER_BUILDKIT=1 docker --config=/path/to/config build -t bar -f docker/go_container.dockerfile --build-arg cmd=bar .": {},
+	}
+
+	var actual = make(map[string]struct{})
+	for _, val := range result {
+		actual[val] = struct{}{}
+	}
+
+	if !reflect.DeepEqual(expect, actual) {
+		t.Fatalf("command mismatch, expected:\n %v\n got:\n %v", expect, actual)
+	}
+}
+
+func TestQuiet(t *testing.T) {
+	quiet = true
+	defer func() {
+		quiet = false
+	}()
+
+	var testFile, err = createTestConfigFile()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := os.Remove(testFile); err != nil {
+			t.Fatalf("removing test file: %s", err)
+		}
+	}()
+
+	result, err := unbake(testFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != 2 {
+		t.Fatal("wrong number of command results")
+	}
+
+	var expect = map[string]struct{}{
+		"docker build -q -t foo -f docker/go_container.dockerfile --build-arg cmd=foo .": {},
+		"docker build -q -t bar -f docker/go_container.dockerfile --build-arg cmd=bar .": {},
 	}
 
 	var actual = make(map[string]struct{})

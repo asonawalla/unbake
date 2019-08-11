@@ -43,7 +43,11 @@ func targetsToCommands(targets map[string]bake.Target) []string {
 			if dockerCfg != "" {
 				cmd += fmt.Sprintf("--config=%s ", dockerCfg)
 			}
-			cmd += fmt.Sprintf("build -t %s -f %s ", tag, *t.Dockerfile)
+			cmd += "build "
+			if quiet {
+				cmd += "-q "
+			}
+			cmd += fmt.Sprintf("-t %s -f %s ", tag, *t.Dockerfile)
 			for k, v := range t.Args {
 				cmd += fmt.Sprintf("--build-arg %s=%s ", k, v)
 			}
@@ -56,3 +60,4 @@ func targetsToCommands(targets map[string]bake.Target) []string {
 
 var buildKit bool
 var dockerCfg string
+var quiet bool

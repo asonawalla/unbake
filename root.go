@@ -78,6 +78,9 @@ func init() {
 
 	rootCmd.Flags().StringVar(&dockerCfg, "docker-config", "",
 		"custom docker client config directory")
+
+	rootCmd.Flags().BoolVarP(&quiet, "quiet", "q", false,
+		"docker build only prints results")
 }
 
 // initConfig reads in config file and ENV variables if set.
