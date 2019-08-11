@@ -39,3 +39,9 @@ requirement, making this a promising option for CI environments):
 ```
 docker run --rm -v$(pwd):/bake asonawalla/unbake /bin/unbake -f /bake/bake.hcl | sh
 ```
+
+## Compatibility
+Though upstream docker/buildx's high level build constructs are a WIP and buildx itself is listed as a "tech preview",
+this repository uses a forked and pinned version of buildx at asonawalla/buildx. Unbake will update with releases
+as the fork tracks upstream. That means that if you use asonawalla/buildx, it will reliably be compatible with
+asonawalla/unbake.
