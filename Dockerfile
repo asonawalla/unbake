@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:experimental
 FROM golang:1.12 as builder
 
 WORKDIR /unbake
