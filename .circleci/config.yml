@@ -2,7 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.12
+      - image: docker:19.03
     steps:
       - checkout
-      - run: go test -v
+      - setup_remote_docker
+      - run: DOCKER_BUILDKIT=1 docker build -t asonawalla/unbake .
