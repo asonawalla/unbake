@@ -46,12 +46,14 @@ plain docker commands to build those targets. You'd want to run the unbake conta
 in your CI against a bake file and pipe the output of it to shell to continue with a
 multi-invocation docker build process.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var commands, err = unbake(cmd.Flag("file").Value.String())
-		if err != nil {
-			log.Panic(err)
-		}
-		for _, command := range commands {
-			fmt.Println(command)
+		for _, file := range files {
+			var commands, err = unbake(file)
+			if err != nil {
+				log.Panic(err)
+			}
+			for _, command := range commands {
+				fmt.Println(command)
+			}
 		}
 	},
 }
@@ -65,12 +67,15 @@ func Execute() {
 	}
 }
 
+var files []string
+
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "",
 		"config file (default is $HOME/.unbake.yaml)")
 
-	rootCmd.Flags().StringP("file", "f", "", "bake file to process")
+	rootCmd.Flags().StringArrayVarP(&files, "file", "f", []string{},
+		"bake file to process")
 	_ = rootCmd.MarkFlagRequired("file")
 
 	rootCmd.Flags().BoolVarP(&buildKit, "buildkit", "b", false,
