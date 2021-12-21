@@ -3,6 +3,8 @@
 [![GoDoc](https://godoc.org/github.com/asonawalla/unbake?status.svg)](https://godoc.org/github.com/asonawalla/unbake)
 [![Go Report Card](https://goreportcard.com/badge/github.com/asonawalla/unbake)](https://goreportcard.com/report/github.com/asonawalla/unbake)
 
+**Archive Notice** This repository is no longer maintained. If you want to use it for your own purposes, please fork it and update all upstream dependencies first.
+
 Reverse docker buildx bake files into sequential docker commands
 
 docker/buildx is a plugin to the most recent docker distribution
